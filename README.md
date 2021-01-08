@@ -65,6 +65,8 @@ Elevation data from the Google Maps API is automatically inserted into the recor
 
 REST endpoint: https://api.communitysnowobs.org/observations
 
+See the Jupyter Notebook [CSOobservationsAPI_demo.ipynb](https://github.com/communitysnowobs/cso-api/blob/master/notebooks/CSOobservationsAPI_demo.ipynb) for a demonstration of effective use of the `observations` API in Python.
+
 ### API Parameters
 
 - `bbox`: Bounding box to return results from, specified by `<west,north,east,south>` edges in that order. Takes precedence over region. Longitude ranges from -180° to 180°. Example: `-120,45,-110,40`. Default: `None`.
@@ -74,6 +76,10 @@ REST endpoint: https://api.communitysnowobs.org/observations
 - `format`: Format to return results from. One of `geojson`, `csv`, `json`. Default: `geojson`
 - `limit`: Maximum number of results to return. Example: `1000`. Default: `100`
 - `page`: Page number of results to return. Example: `1`. Default: `1`.
+
+### API response
+
+The `observations` API returns the following attributes for each observation: `id`, `author`, `source`, `timestamp` (UTC), `depth` (meters), `elevation` (meters), `long`, `lat`. Explicit `long` and `lat` attributes are ommitted in the GeoJSON response, where the coordinates are encoded as standard point geometries.
 
 ### Example API calls
 
