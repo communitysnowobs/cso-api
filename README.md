@@ -79,7 +79,7 @@ See the Jupyter Notebook [CSOobservationsAPI_demo.ipynb](https://github.com/comm
 
 ### API response
 
-The `observations` API returns the following attributes for each observation: `id`, `author`, `source`, `timestamp` (UTC), `depth` (meters), `elevation` (meters), `long`, `lat`. Explicit `long` and `lat` attributes are ommitted in the GeoJSON response, where the coordinates are encoded as standard point geometries.
+The `observations` API returns the following attributes for each observation: `id`, `author`, `source`, `timestamp` (UTC), `depth` (cm), `elevation` (meters), `long`, `lat`. Explicit `long` and `lat` attributes are ommitted in the GeoJSON response, where the coordinates are encoded as standard point geometries.
 
 ### Example API calls
 
