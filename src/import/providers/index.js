@@ -3,6 +3,7 @@ const MountainHub = require('./mountainhub');
 const SnowPilot = require('./snowpilot');
 const RegObs = require('./regobs');
 
+// 604800000
 const ONE_WEEK = 604800000;
 
 const retrieveObservation = async function (
@@ -13,7 +14,7 @@ const retrieveObservation = async function (
   try {
     startDate =
       parseDate(startDate) || new Date(new Date().getTime() - ONE_WEEK);
-    endDate = parseDate(endDate) || new Date();
+    endDate = parseDate(endDate) || new Date(new Date().getTime());
     const rawData = await provider.rawData(startDate, endDate);
     let data = rawData.map(provider.parseData).filter((x) => x);
     data = await withElevation(data);

@@ -1,5 +1,6 @@
 const pg = require('pg');
 const { providers, retrieveObservations } = require('./providers');
+var validator = require('validator');
 
 // Postgres database config
 const pgConfig = {
@@ -25,7 +26,7 @@ const importObservations = async function (observations) {
     observations = observations.map(
       (o) =>
         `(ST_SetSRID(ST_MakePoint(${o.long}, ${o.lat}), 4326), '${o.id}', '${
-          o.author_name
+          validator.escape(o.author_name)
         }', ${o.depth}, TIMESTAMP '${o.timestamp.toISOString()}', '${
           o.source
         }', ${o.elevation})`
