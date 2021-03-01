@@ -1,6 +1,5 @@
 const pg = require('pg');
 const { providers, retrieveObservations } = require('./providers');
-var validator = require('validator');
 
 // Postgres database config
 const pgConfig = {
@@ -23,20 +22,25 @@ const importObservations = async function (observations) {
   }
   try {
     await pgPool.query('BEGIN');
-    observations = observations.map(
-      (o) =>
-        `(ST_SetSRID(ST_MakePoint(${o.long}, ${o.lat}), 4326), '${o.id}', '${
-          validator.escape(o.author_name)
-        }', ${o.depth}, TIMESTAMP '${o.timestamp.toISOString()}', '${
-          o.source
-        }', ${o.elevation})`
-    );
-    const query = `
-      INSERT INTO observations(location, id, author, depth, timestamp, source, elevation)
-      VALUES ${observations}
-      ON CONFLICT DO NOTHING
-    `;
-    await pgPool.query(query);
+    await observations.forEach(async (o) => {
+      const obArr = [
+        o.long,
+        o.lat,
+        o.id,
+        o.author_name,
+        o.depth,
+        o.timestamp.toISOString(),
+        o.source,
+        o.elevation
+      ];
+      const query = `
+        INSERT INTO observations(location, id, author, depth, timestamp, source, elevation)
+        VALUES (ST_SetSRID(ST_MakePoint($1, $2),4326), $3, $4, $5, $6, $7, $8)
+        ON CONFLICT DO NOTHING
+      `;
+      await pgPool.query(query, obArr)
+        .catch(err => console.error(err.stack));
+    });
     await pgPool.query('COMMIT');
   } catch (error) {
     await pgPool.query('ROLLBACK');

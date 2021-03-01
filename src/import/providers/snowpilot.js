@@ -1,6 +1,7 @@
 const { generateId } = require("../utils")
 const request = require('request-promise');
 const parseString = require('xml2js').parseString;
+const escape = require('pg-escape');
 
 const LOGIN_URL = 'https://snowpilot.org/user/login'
 const LOGIN_HEADERS = { 'User-Agent': 'script login', withCredentials:true }
@@ -58,6 +59,7 @@ const parseData = (record) => {
     if (format.lat == 0 && format.long == 0) throw new Error("No Location Data");
     return format;
   } catch (error) {
+    console.error(error);
     return null;
   }
 }
